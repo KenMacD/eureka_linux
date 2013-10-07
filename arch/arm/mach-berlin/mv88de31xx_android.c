@@ -69,16 +69,16 @@ static __initdata struct board_config {
 #define BG2PROTO_MTDPARTS(__RO__)                      \
       "mv_nand:"                                       \
       "1M(block0)ro," /* flash config params */        \
-      "8M(bootloader)" __RO__ "," /* 8x copies */      \
+      "8M(bootloader)ro," /* 8x copies */              \
       "7M(fts)ro,"                                     \
       "16M(kernel)"__RO__ ","                          \
       "60M(recovery),"                                 \
       "80M(backupsys)ro,"                              \
-      "16M(factory_store)" __RO__ ","                  \
+      "16M(factory_store)ro,"                          \
       "400M(rootfs)" __RO__ ","                        \
       "32M(localstorage),"                             \
       "300M(cache),"                                   \
-      "1024M(userdata),"                                \
+      "1024M(userdata),"                               \
       "8M@4088M(bbt)ro"
       /* TODO: limit write access to important partitions
        * in non-recovery mode
@@ -100,13 +100,13 @@ static __initdata struct board_config {
 #define EUREKA_B1_MTDPARTS(__RO__,__RRO__)             \
       "mv_nand:"                                       \
       "1M(block0)ro," /* flash config params */        \
-      "8M(bootloader)" __RO__ "," /* 8x copies */      \
+      "8M(bootloader)ro," /* 8x copies */              \
       "7M(fts)ro,"                                     \
       "16M(kernel)"__RO__ ","                          \
       "60M(recovery),"                                 \
       "80M(backupsys),"                                \
-      "16M(factory_store),"                            \
-      "400M(rootfs)" __RRO__","                        \
+      "16M(factory_store)ro,"                          \
+      "400M(rootfs)" __RO__","                         \
       "300M(cache),"                                   \
       "1024M(userdata),"                               \
       "8M@2040M(bbt)ro"
@@ -127,7 +127,7 @@ static __initdata struct board_config {
 #define EUREKA_B2_MTDPARTS(__RO__)                           \
       "mv_nand:"                                             \
       "1M(block0)ro," /* flash config params */              \
-      "8M(bootloader)" __RO__ "," /* 8x copies */            \
+      "8M(bootloader)ro," /* 8x copies */                    \
       "16M(kernel)"__RO__ ","                                \
       "400M(rootfs)"__RO__ ","                               \
       "300M(cache),"                                         \
@@ -135,7 +135,7 @@ static __initdata struct board_config {
       "48M(recovery),"                                       \
       "96M(backupsys),"                                      \
       "8M(fts)ro,"                                           \
-      "16M(factory_store),"                                  \
+      "16M(factory_store)ro,"                                \
       "8M(bbt)ro"
       .mtdparts = EUREKA_B2_MTDPARTS("ro"),
       .mtdparts_ro = EUREKA_B2_MTDPARTS("ro"),
@@ -154,7 +154,7 @@ static __initdata struct board_config {
 #define EUREKA_B3_MTDPARTS(__RO__)                           \
       "mv_nand:"                                             \
       "1M(block0)ro," /* flash config params */              \
-      "8M(bootloader)" __RO__ "," /* 8x copies */            \
+      "8M(bootloader)ro," /* 8x copies */                    \
       "16M(kernel)"__RO__ ","                                \
       "400M(rootfs)"__RO__ ","                               \
       "300M(cache),"                                         \
@@ -162,7 +162,7 @@ static __initdata struct board_config {
       "48M(recovery),"                                       \
       "96M(backupsys),"                                      \
       "8M(fts)ro,"                                           \
-      "16M(factory_store)" __RO__ ","                        \
+      "16M(factory_store)ro,"                                \
       "8M(bbt)ro"
       .mtdparts = EUREKA_B3_MTDPARTS("ro"),
       .mtdparts_ro = EUREKA_B3_MTDPARTS("ro"),

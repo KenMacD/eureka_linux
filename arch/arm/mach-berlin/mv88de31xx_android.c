@@ -536,7 +536,6 @@ static __initdata struct board_config {
 #define DEFAULT_BOARD  "bg2proto"
 static __initdata char board_name[32] = DEFAULT_BOARD;
 
-static __initdata char console[32];
 static __initdata char boot_mode[32];
 static __initdata char root[32];
 static __initdata int ro_mode = 0;
@@ -578,9 +577,6 @@ static int __init do_param(char *param, char *val, const char *unused)
         ro_mode = 1;
         return 0;
     }
-
-    if (!strcmp(param, "console") && val)
-        strlcpy(console, val, sizeof(console));
 
     if (!strcmp(param, "root") && val)
         strlcpy(root, val, sizeof(root));
@@ -628,15 +624,18 @@ void __init mv88de31xx_android_fixup(char **from)
     /* Locate command line ATAG and extract command line */
     cmdline = get_cmdline();
 
-    /* Override from(defaultp_command_line) */
-    *from = mv88de31xx_command_line;
-    mv88de31xx_command_line[0] = '\0';
-
     /* Scan boot command line removing all memory layout
      * parameters on the way.
      */
     mv88de31xx_command_line[0] = '\0';
+
+#if defined(CONFIG_CMDLINE_EXTEND) || defined(CONFIG_CMDLINE_FORCE)
+    strlcat(mv88de31xx_command_line, *from, COMMAND_LINE_SIZE);
+#endif
+
+#if defined(CONFIG_CMDLINE_EXTEND) || defined(CONFIG_CMDLINE_FROM_BOOTLOADER)
     parse_args("memory_setup", cmdline, NULL, 0, 0, 0, do_param);
+#endif
 
     recovery_boot = !strcmp(boot_mode, "recovery");
     if (recovery_boot)
@@ -670,19 +669,15 @@ void __init mv88de31xx_android_fixup(char **from)
     add_boot_param("androidboot.hardware", board_name);
     if (boot_mode[0])
         add_boot_param("androidboot.mode", boot_mode);
-    if (console[0]) {
-        /* keep only console device name, e.g. ttyS0 */
-        char *p = strchr(console, ',');
-        if (p)
-            *p = '\0';
-        add_boot_param("androidboot.console", console);
-    }
 
     /* Register optional reboot hook */
     if (cfg->reboot_notifier) {
         reboot_notifier.notifier_call = cfg->reboot_notifier;
         register_reboot_notifier(&reboot_notifier);
     }
+
+    /* Override from(defaultp_command_line) */
+    *from = mv88de31xx_command_line;
 
     return;
 }

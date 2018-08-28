@@ -1,0 +1,11 @@
+config SND_SOC_BERLIN
+        tristate "SoC Audio for the BERLIN chip"
+        select SND_ARM
+        select SND_BERLIN_LIB
+        select SND_HWDEP
+
+config SND_SOC_BERLIN_HW_VOL_CTRL
+        bool "Hardware power amplifier volume control"
+        help
+          Say Y only on pineapple or mushroom.
+          Pepperoni does not have the power amp.
